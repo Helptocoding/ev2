@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:vm="clr-namespace:ControlGastos.ViewModels"
+             xmlns:models="clr-namespace:ControlGastos.Models"
+             x:Class="ControlGastos.Views.ResumenPage"
+             x:DataType="vm:VMResumen"
+             Title="{Binding Titulo}">
+
+    <Grid RowDefinitions="Auto,Auto,*" Padding="16" RowSpacing="12">
+
+        <Grid Grid.Row="0" ColumnDefinitions="Auto,*,Auto">
+            <Button Grid.Column="0" Text="◀" WidthRequest="56" Command="{Binding MesAnteriorCommand}" />
+            <Label Grid.Column="1"
+                   Text="{Binding MesTitulo}"
+                   FontSize="20"
+                   FontAttributes="Bold"
+                   HorizontalOptions="Center"
+                   VerticalOptions="Center" />
+            <Button Grid.Column="2" Text="▶" WidthRequest="56" Command="{Binding MesSiguienteCommand}" />
+        </Grid>
+
+        <Border Grid.Row="1" Style="{StaticResource Tarjeta}">
+            <VerticalStackLayout Spacing="6">
+                <Label Text="{Binding TotalGastado, StringFormat='Total del mes: {0:C}'}"
+                       FontSize="22"
+                       FontAttributes="Bold" />
+                <Label Text="{Binding PromedioDiario, StringFormat='Promedio diario: {0:C}'}" />
+                <Label Text="{Binding CategoriaConMayorGasto, StringFormat='Categoría con más gasto: {0}'}" />
+            </VerticalStackLayout>
+        </Border>
+
+        <CollectionView Grid.Row="2"
+                        ItemsSource="{Binding Categorias}"
+                        SelectionMode="None">
+            <CollectionView.EmptyView>
+                <Label Text="Sin gastos en este mes."
+                       HorizontalOptions="Center"
+                       VerticalOptions="Center" />
+            </CollectionView.EmptyView>
+            <CollectionView.ItemTemplate>
+                <DataTemplate x:DataType="models:ResumenCategoria">
+                    <VerticalStackLayout Padding="0,8" Spacing="4">
+                        <Grid ColumnDefinitions="*,Auto">
+                            <Label Grid.Column="0" Text="{Binding Categoria}" FontAttributes="Bold" />
+                            <Label Grid.Column="1" Text="{Binding Total, StringFormat='{0:C}'}" />
+                        </Grid>
+                        <ProgressBar Progress="{Binding ProgresoParaBarra}" />
+                        <Label FontSize="12" TextColor="Gray">
+                            <Label.FormattedText>
+                                <FormattedString>
+                                    <Span Text="{Binding Porcentaje, StringFormat='{0:0.#}%'}" />
+                                    <Span Text=" · " />
+                                    <Span Text="{Binding CantidadDeGastos, StringFormat='{0} gastos'}" />
+                                </FormattedString>
+                            </Label.FormattedText>
+                        </Label>
+                    </VerticalStackLayout>
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+        </CollectionView>
+    </Grid>
+</ContentPage>

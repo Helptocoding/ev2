@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:vm="clr-namespace:ControlGastos.ViewModels"
+             xmlns:sys="clr-namespace:System;assembly=System.Runtime"
+             x:Class="ControlGastos.Views.NuevoGastoPage"
+             x:DataType="vm:VMNuevoGasto"
+             Title="{Binding Titulo}">
+
+    <ScrollView>
+        <VerticalStackLayout Padding="20" Spacing="14">
+
+            <Label Text="Descripción" FontAttributes="Bold" />
+            <Entry Placeholder="Ej. Tacos con amigos"
+                   MaxLength="60"
+                   Text="{Binding Descripcion}" />
+
+            <Label Text="Monto" FontAttributes="Bold" />
+            <Entry Placeholder="0.00"
+                   Keyboard="Numeric"
+                   MaxLength="12"
+                   Text="{Binding MontoTexto}" />
+
+            <Label Text="Categoría" FontAttributes="Bold" />
+            <Picker Title="Selecciona una categoría"
+                    ItemsSource="{Binding Categorias}"
+                    SelectedItem="{Binding CategoriaSeleccionada}" />
+
+            <Label Text="Fecha" FontAttributes="Bold" />
+            <DatePicker Date="{Binding Fecha}"
+                        MaximumDate="{x:Static sys:DateTime.Today}" />
+
+            <Label Text="{Binding MensajeDeErrores}"
+                   TextColor="{StaticResource ColorPeligro}"
+                   IsVisible="{Binding HayErrores}" />
+
+            <Button Text="Guardar"
+                    Command="{Binding GuardarCommand}"
+                    IsEnabled="{Binding NoEstaOcupado}" />
+            <Button Text="Cancelar"
+                    BackgroundColor="Gray"
+                    Command="{Binding CancelarCommand}" />
+
+            <ActivityIndicator IsRunning="{Binding EstaOcupado}" IsVisible="{Binding EstaOcupado}" />
+        </VerticalStackLayout>
+    </ScrollView>
+</ContentPage>

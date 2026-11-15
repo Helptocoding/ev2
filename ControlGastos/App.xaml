@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Application xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="ControlGastos.App">
+    <Application.Resources>
+        <ResourceDictionary>
+            <Color x:Key="ColorPrincipal">#2563EB</Color>
+            <Color x:Key="ColorPeligro">#DC2626</Color>
+            <Color x:Key="ColorTarjetaClaro">#F1F5F9</Color>
+            <Color x:Key="ColorTarjetaOscuro">#1E293B</Color>
+
+            <Style TargetType="Shell" ApplyToDerivedTypes="True">
+                <Setter Property="Shell.BackgroundColor" Value="{StaticResource ColorPrincipal}" />
+                <Setter Property="Shell.ForegroundColor" Value="White" />
+                <Setter Property="Shell.TitleColor" Value="White" />
+                <Setter Property="Shell.TabBarBackgroundColor" Value="{AppThemeBinding Light=White, Dark=#0F172A}" />
+                <Setter Property="Shell.TabBarForegroundColor" Value="{StaticResource ColorPrincipal}" />
+                <Setter Property="Shell.TabBarTitleColor" Value="{StaticResource ColorPrincipal}" />
+                <Setter Property="Shell.TabBarUnselectedColor" Value="Gray" />
+            </Style>
+
+            <Style x:Key="Tarjeta" TargetType="Border">
+                <Setter Property="Padding" Value="14" />
+                <Setter Property="StrokeThickness" Value="0" />
+                <Setter Property="StrokeShape" Value="RoundRectangle 14" />
+                <Setter Property="BackgroundColor" Value="{AppThemeBinding Light={StaticResource ColorTarjetaClaro}, Dark={StaticResource ColorTarjetaOscuro}}" />
+            </Style>
+        </ResourceDictionary>
+    </Application.Resources>
+</Application>

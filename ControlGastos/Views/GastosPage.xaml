@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:vm="clr-namespace:ControlGastos.ViewModels"
+             xmlns:models="clr-namespace:ControlGastos.Models"
+             x:Class="ControlGastos.Views.GastosPage"
+             x:DataType="vm:VMGastos"
+             Title="{Binding Titulo}">
+
+    <Grid RowDefinitions="Auto,*" Padding="16" RowSpacing="12">
+
+        <VerticalStackLayout Grid.Row="0" Spacing="10">
+            <Grid ColumnDefinitions="Auto,*,Auto">
+                <Button Grid.Column="0" Text="◀" WidthRequest="56" Command="{Binding MesAnteriorCommand}" />
+                <Label Grid.Column="1"
+                       Text="{Binding MesTitulo}"
+                       FontSize="20"
+                       FontAttributes="Bold"
+                       HorizontalOptions="Center"
+                       VerticalOptions="Center" />
+                <Button Grid.Column="2" Text="▶" WidthRequest="56" Command="{Binding MesSiguienteCommand}" />
+            </Grid>
+
+            <Border Style="{StaticResource Tarjeta}">
+                <VerticalStackLayout Spacing="6">
+                    <Label Text="{Binding TotalGastado, StringFormat='Gastado: {0:C}'}"
+                           FontSize="22"
+                           FontAttributes="Bold" />
+                    <Label Text="{Binding PresupuestoMensual, StringFormat='Presupuesto: {0:C}'}" />
+                    <Label Text="{Binding Restante, StringFormat='Disponible: {0:C}'}" />
+                    <ProgressBar Progress="{Binding ProgresoPresupuesto}" />
+                    <Label Text="{Binding TextoEstado}" FontSize="13" />
+                    <Label Text="{Binding PromedioDiario, StringFormat='Promedio diario: {0:C}'}" FontSize="13" />
+                    <Button Text="Editar presupuesto" Command="{Binding EditarPresupuestoCommand}" />
+                </VerticalStackLayout>
+            </Border>
+        </VerticalStackLayout>
+
+        <RefreshView Grid.Row="1"
+                     Command="{Binding CargarCommand}"
+                     IsRefreshing="{Binding EstaRefrescando}">
+            <Grid>
+                <CollectionView ItemsSource="{Binding GastosDelMes}"
+                                SelectionMode="None">
+                    <CollectionView.EmptyView>
+                        <Label Text="No hay gastos en este mes.&#10;Toca + para agregar uno."
+                               HorizontalTextAlignment="Center"
+                               HorizontalOptions="Center"
+                               VerticalOptions="Center" />
+                    </CollectionView.EmptyView>
+                    <CollectionView.ItemTemplate>
+                        <DataTemplate x:DataType="models:Gasto">
+                            <SwipeView>
+                                <SwipeView.RightItems>
+                                    <SwipeItems>
+                                        <SwipeItem Text="Editar"
+                                                   BackgroundColor="#2563EB"
+                                                   Invoked="AlEditarDesdeDeslizamiento" />
+                                        <SwipeItem Text="Eliminar"
+                                                   BackgroundColor="#DC2626"
+                                                   Invoked="AlEliminarDesdeDeslizamiento" />
+                                    </SwipeItems>
+                                </SwipeView.RightItems>
+
+                                <Grid ColumnDefinitions="*,Auto" Padding="4,10">
+                                    <VerticalStackLayout Grid.Column="0" Spacing="2">
+                                        <Label Text="{Binding Descripcion}" FontSize="16" FontAttributes="Bold" />
+                                        <Label Text="{Binding Categoria}" FontSize="12" TextColor="Gray" />
+                                        <Label Text="{Binding Fecha, StringFormat='{0:dd/MM/yyyy}'}" FontSize="12" TextColor="Gray" />
+                                    </VerticalStackLayout>
+                                    <Label Grid.Column="1"
+                                           Text="{Binding Monto, StringFormat='{0:C}'}"
+                                           FontSize="16"
+                                           FontAttributes="Bold"
+                                           VerticalOptions="Center" />
+                                </Grid>
+                            </SwipeView>
+                        </DataTemplate>
+                    </CollectionView.ItemTemplate>
+                </CollectionView>
+
+                <Button Text="+"
+                        FontSize="28"
+                        WidthRequest="60"
+                        HeightRequest="60"
+                        CornerRadius="30"
+                        Padding="0"
+                        HorizontalOptions="End"
+                        VerticalOptions="End"
+                        Margin="0,0,4,4"
+                        Command="{Binding NuevoGastoCommand}" />
+            </Grid>
+        </RefreshView>
+    </Grid>
+</ContentPage>
